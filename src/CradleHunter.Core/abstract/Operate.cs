@@ -15,7 +15,7 @@ namespace CradleHunter.Core
             Context = context;
         }
 
-        public void TryCatch(string Message, Action TaskExcute, Action ExceptionCatch = null)
+        protected void TryCatch(string Message, Action TaskExcute, Action ExceptionCatch = null)
         {
             TryCatch(Message, () =>
             {
@@ -24,7 +24,7 @@ namespace CradleHunter.Core
             }, ExceptionCatch);
         }
 
-        public void TryCatch(string Message, Func<StatusResult> TaskExcute,Action ExceptionCatch = null)
+        protected void TryCatch(string Message, Func<StatusResult> TaskExcute,Action ExceptionCatch = null)
         {
             try
             {

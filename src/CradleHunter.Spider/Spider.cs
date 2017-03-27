@@ -1,6 +1,11 @@
 ﻿using CradleHunter.Core;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CradleHunter.Spider
 {
@@ -40,15 +45,12 @@ namespace CradleHunter.Spider
     {
         public StatusResult Result { get; set; } = new StatusResult();
 
-        public int LegCount { get; set; }
-
         public string Address { get; private set; }
 
         public string Template { get; private set; }
 
-        public SpiderContext(int legs,string taskAddress,string taskTemplate)
+        public SpiderContext(string taskAddress,string taskTemplate)
         {
-            LegCount = legs;
             Address = taskAddress;
             Template = taskTemplate;
         }
@@ -57,7 +59,7 @@ namespace CradleHunter.Spider
     /// <summary>
     /// 蜘蛛人
     /// </summary>
-    public class Spider: Operate<SpiderContext>
+    public class SpiderOperater : Operate<SpiderContext>
     {
         /// <summary>
         /// 任务名称
@@ -87,7 +89,7 @@ namespace CradleHunter.Spider
         /// <summary>
         /// 构造函数
         /// </summary>
-        public Spider(IScheduler scheduler,string name,SpiderContext context):base(context)
+        public SpiderOperater (IScheduler scheduler,string name,SpiderContext context):base(context)
         {
             Scheduler = scheduler;
             Name = name;
@@ -107,7 +109,12 @@ namespace CradleHunter.Spider
         /// </summary>
         private void Init()
         {
+            Limbs = new SpiderLimb(this);
+
+            Head = new SpiderHead(this);
+
             Monitor = ServicesManager.CreateMonitor();
+
         }
 
         /// <summary>
@@ -115,26 +122,52 @@ namespace CradleHunter.Spider
         /// </summary>
         private void Execute()
         {
-            TryCatch($"{Name} Spider Execute", ()=> {
-                if (Result.Succeeded) Limbs.Fetch();
-                if (Result.Succeeded) Head.Analysis();
-            },()=>{
+            TryCatch($"{Name} Spider Execute", async () =>
+            {
+                if (Result.Succeeded) await Limbs.Fetch();
+
+                if (Result.Succeeded) await Head.Analysis();
+
+            }, ()=>{
                 Scheduler.Fail(Result);
+
             });
         }
     }
 
+   
     /// <summary>
     /// 蜘蛛 爬行器  Execute to fetch
     /// </summary>
     public class SpiderLimb
     {
-        public Spider Owner { get; private set; }
-        public SpiderLimb(Spider owner) { Owner = owner; }
-        public void Fetch()
-        {
+        public SpiderContext Context { get { return Owner.Context; } }
 
+        public SpiderOperater  Owner { get; private set; }
+
+        public SpiderLimb(SpiderOperater  owner) { Owner = owner; }
+        
+        private WaitOrTimerCallback TimeoutCallback { get; set; } = (state, timedOut) => { };
+
+        public async Task Fetch()
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.UseDefaultCredentials = true;
+            HttpClient Client = new HttpClient(handler);
+
+            try
+            {
+                var result = await Client.GetAsync(new Uri(Context.Address));
+                var content = await result.Content.ReadAsStringAsync();
+                var file = $"{AppContext.BaseDirectory}\\downhtml\\{Context.Address.Replace("\\", string.Empty).Replace("/", string.Empty).Replace(":", string.Empty)}-{DateTime.Now}.html";
+                File.WriteAllText(file, content);
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
         }
+      
     }
 
 
@@ -144,9 +177,9 @@ namespace CradleHunter.Spider
     /// </summary>
     public class SpiderHead
     {
-        public Spider Owner { get; private set; }
-        public SpiderHead(Spider owner) { Owner = owner; }
-        public void Analysis()
+        public SpiderOperater  Owner { get; private set; }
+        public SpiderHead(SpiderOperater  owner) { Owner = owner; }
+        public async Task Analysis()
         {
 
         }
