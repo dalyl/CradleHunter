@@ -12,7 +12,7 @@ namespace CradleHunter.Test.SpiderTest
 
         public SpiderOperaterTest()
         {
-            ServicesManager.AddTransient<IMonitor, IMonitorTest>();
+            ServicesManager.AddTransient<IMonitor, MonitorTest>();
         }
 
 

@@ -6,29 +6,51 @@ using System.Text;
 
 namespace CradleHunter.Test.CoreTest
 {
-    [TestClass]
-    public class IMonitorTest : IMonitor
+    public class MonitorTest : IMonitor
     {
-        [TestMethod]
         public void Info(string message)
         {
             Console.WriteLine(message);
 
         }
 
-        [TestMethod]
         public void StartWatch()
         {
             Console.WriteLine("Monitor TASKS");
 
         }
 
-        [TestMethod]
         public void StopWatch()
         {
             Console.WriteLine("Monitor TASKS");
 
         }
-
     }
+
+    [TestClass]
+    public class IMonitorTest 
+    {
+        public IMonitor Model { get; set; } = new MonitorTest();
+
+        [TestMethod]
+        public void Info()
+        {
+            Model.Info("test");
+        }
+
+        [TestMethod]
+        public void StartWatch()
+        {
+            Model.StartWatch();
+
+        }
+
+        [TestMethod]
+        public void StopWatch()
+        {
+            Model.StopWatch();
+
+        }
+    }
+
 }

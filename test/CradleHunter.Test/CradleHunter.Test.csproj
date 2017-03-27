@@ -11,15 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\CradleHunter.Hangfire\CradleHunter.Hangfire.csproj" />
     <ProjectReference Include="..\..\src\CradleHunter.Spider\CradleHunter.Spider.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="HangfireTest\" />
   </ItemGroup>
 
 </Project>

@@ -10,6 +10,7 @@ namespace CradleHunter.Hangfire
 {
     public static class Configure
     {
+
         public static void AddHangfire(IServiceCollection services,string connection)
         {
             services.AddHangfire(x => x.UseSqlServerStorage(connection));
@@ -21,5 +22,7 @@ namespace CradleHunter.Hangfire
         {
              app.UseHangfireServer();
         }
+
+
     }
 }
