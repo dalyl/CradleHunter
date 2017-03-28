@@ -6,24 +6,54 @@ using System.Text;
 
 namespace CradleHunter.Test.CoreTest
 {
-    [TestClass]
-    public class ISchedulerTest : IScheduler
+
+    public abstract class ISchedulerBaseTest
     {
-        public ISchedulerTest()
+        public abstract IScheduler TestModel { get; }
+
+        public void Fail()
         {
+            TestModel.Fail();
         }
 
-        [TestMethod]
+        public void Fail_Status()
+        {
+            var status = new StatusResult();
+            status.AddError("fail:");
+            TestModel.Fail(status);
+        }
+    }
+
+    public class SchedulerTest : IScheduler
+    {
         public void Fail()
         {
             Console.Write("fail");
         }
 
-        [TestMethod]
         public void Fail(StatusResult status)
         {
             Console.WriteLine("fail:");
             Console.WriteLine(status.Errors);
         }
     }
+
+    [TestClass]
+    public class ISchedulerTest : ISchedulerBaseTest
+    {
+        public override IScheduler TestModel => new SchedulerTest();
+
+        [TestMethod]
+        public void Fail_Test()
+        {
+            base.Fail();
+        }
+
+        [TestMethod]
+        public void Fail_Status_Test()
+        {
+            base.Fail_Status();
+        }
+    }
+
 }

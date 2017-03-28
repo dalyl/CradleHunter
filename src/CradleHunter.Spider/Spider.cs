@@ -157,14 +157,18 @@ namespace CradleHunter.Spider
 
             try
             {
-                var result = await Client.GetAsync(new Uri(Context.Address));
-                var content = await result.Content.ReadAsStringAsync();
-                var file = $"{AppContext.BaseDirectory}\\downhtml\\{Context.Address.Replace("\\", string.Empty).Replace("/", string.Empty).Replace(":", string.Empty)}-{DateTime.Now}.html";
+                var fetchResult = Client.GetAsync(new Uri(Context.Address));
+                fetchResult.Wait();
+                var result =  fetchResult.Result;
+                var fetchContent= result.Content.ReadAsStringAsync();
+                fetchContent.Wait();
+                var content = fetchContent.Result;
+                var file = $"{AppContext.BaseDirectory}\\downhtml\\{Context.Address.Replace("\\", string.Empty).Replace("/", string.Empty).Replace(":", string.Empty)}-{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss.fff")}.html";
                 File.WriteAllText(file, content);
             }
             catch (Exception ex)
             {
-                Console.Write(ex.Message);
+                Context.Result.AddError(ex.Message);
             }
         }
       

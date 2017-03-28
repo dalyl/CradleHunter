@@ -27,29 +27,53 @@ namespace CradleHunter.Test.CoreTest
         }
     }
 
-    [TestClass]
-    public class IMonitorTest 
+    public abstract class MonitorBaseTest
     {
-        public IMonitor Model { get; set; } = new MonitorTest();
+
+        public abstract IMonitor TestModel { get; }
+
+
+        public void Info(string message)
+        {
+            TestModel.Info(message);
+
+        }
+
+        public void StartWatch()
+        {
+            TestModel.StartWatch();
+
+        }
+
+        public void StopWatch()
+        {
+            TestModel.StopWatch();
+
+        }
+    }
+
+    [TestClass]
+    public class IMonitorTest : MonitorBaseTest
+    {
+        public override IMonitor TestModel =>  new MonitorTest();
 
         [TestMethod]
         public void Info()
         {
-            Model.Info("test");
+            base.Info("test");
         }
 
         [TestMethod]
         public void StartWatch()
         {
-            Model.StartWatch();
+            base.StartWatch();
 
         }
 
         [TestMethod]
         public void StopWatch()
         {
-            Model.StopWatch();
-
+            base.StopWatch();
         }
     }
 
