@@ -6,24 +6,15 @@ using Microsoft.Extensions.DependencyInjection;
 namespace CradleHunter.Core
 {
 
-    public interface IMonitor
-    {
-        void StartWatch();
-
-        void StopWatch();
-
-        void Info(string message);
-
-    }
-
     /// <summary>
     /// 服务
     /// </summary>
-    public class ServicesManager
+    public class ServiceManager
     {
+
         private static IServiceCollection _services;
         private static IServiceProvider _serviceProvider;
-        private static readonly ServicesManager Container = new ServicesManager();
+        private static readonly ServiceManager Container = new ServiceManager();
 
         public static void Reset(IServiceCollection services)
         {
@@ -32,7 +23,7 @@ namespace CradleHunter.Core
 
         }
 
-        static ServicesManager() {
+        static ServiceManager() {
             _services = new ServiceCollection();
             _serviceProvider = _services.BuildServiceProvider();
 
@@ -196,10 +187,5 @@ namespace CradleHunter.Core
         #endregion
 
     }
-
-
-    public class ServiceDefaultSetting
-    {
-
-    }
+   
 }

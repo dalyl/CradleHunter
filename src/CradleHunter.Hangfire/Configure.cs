@@ -15,7 +15,7 @@ namespace CradleHunter.Hangfire
         {
             services.AddHangfire(x => x.UseSqlServerStorage(connection));
             services.AddTransient<IMonitor, HangfireMonitor>();
-            ServicesManager.Reset(services);
+            ServiceManager.Reset(services);
         }
 
         public static void UseHangfireCradleHunter(IApplicationBuilder app)

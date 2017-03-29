@@ -113,7 +113,7 @@ namespace CradleHunter.Spider
 
             Head = new SpiderHead(this);
 
-            Monitor = ServicesManager.CreateMonitor();
+            Monitor = ServiceManager.CreateMonitor();
 
         }
 

@@ -33,7 +33,7 @@ namespace CradleHunter.Core
             catch (Exception ex)
             {
                 ExceptionCatch?.Invoke();
-                ServicesManager.ExceptionProvider.Catch(ex);
+                ServiceManager.ExceptionProvider.Catch(ex);
                 Result.AddError($" {Message}, throw Exception：{ex.Message}");
             }
         }
