@@ -6,6 +6,7 @@ namespace CradleHunter.Core
 {
     public interface IOperate<C> where C : IContext
     {
+        string Description { get; }
         C Context { get; set; }
         StatusResult Result { get; }
     }

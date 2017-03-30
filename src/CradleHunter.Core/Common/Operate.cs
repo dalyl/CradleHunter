@@ -6,12 +6,15 @@ namespace CradleHunter.Core
 {
     public abstract class Operate<C> : IOperate<C> where C: IContext
     {
+        public string Description { get; private set; }
+
         public C Context { get; set; }
 
         public StatusResult Result { get { return Context.Result; } }
 
-        public Operate(C context)
+        public Operate(string name,C context)
         {
+            Description = name;
             Context = context;
         }
 
@@ -33,7 +36,7 @@ namespace CradleHunter.Core
             catch (Exception ex)
             {
                 ExceptionCatch?.Invoke();
-                ServiceManager.ExceptionProvider.Catch(ex);
+                ServiceManager.ExceptionProvider.Catch(Description, ex);
                 Result.AddError($" {Message}, throw Exception：{ex.Message}");
             }
         }

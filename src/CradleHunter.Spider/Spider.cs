@@ -61,11 +61,7 @@ namespace CradleHunter.Spider
     /// </summary>
     public class SpiderOperater : Operate<SpiderContext>
     {
-        /// <summary>
-        /// 任务名称
-        /// </summary>
-        public string Name { get; private set; }
-
+       
         /// <summary>
         /// 调度器
         /// </summary>
@@ -86,13 +82,13 @@ namespace CradleHunter.Spider
         /// </summary>
         private SpiderHead Head { get;  set; }
 
+
         /// <summary>
         /// 构造函数
         /// </summary>
-        public SpiderOperater (IScheduler scheduler,string name,SpiderContext context):base(context)
+        public SpiderOperater (IScheduler scheduler,string name,SpiderContext context):base(name, context)
         {
             Scheduler = scheduler;
-            Name = name;
             Init();
         }
        
@@ -122,7 +118,7 @@ namespace CradleHunter.Spider
         /// </summary>
         private void Execute()
         {
-            TryCatch($"{Name} Spider Execute", async () =>
+            TryCatch($"{Description} Spider Execute", async () =>
             {
                 if (Result.Succeeded) await Limbs.Fetch();
 
@@ -173,7 +169,6 @@ namespace CradleHunter.Spider
         }
       
     }
-
 
 
     /// <summary>

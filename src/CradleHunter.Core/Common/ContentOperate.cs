@@ -6,7 +6,7 @@ namespace CradleHunter.Core
 {
     public abstract class ContentOperate<T> : Operate<IContext<T>>
     {
-        public ContentOperate(IContext<T> context) : base(context)
+        public ContentOperate(string name,IContext<T> context) : base(name, context)
         {
 
         }

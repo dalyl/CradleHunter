@@ -6,6 +6,6 @@ namespace CradleHunter.Core
 {
     public interface ICatchException
     {
-        void Catch(Exception ex);
+        void Catch(string name, Exception ex);
     }
 }
