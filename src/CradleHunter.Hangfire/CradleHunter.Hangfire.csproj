@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire" Version="1.6.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CradleHunter.Core\CradleHunter.Core.csproj" />
+  </ItemGroup>
+
+</Project>

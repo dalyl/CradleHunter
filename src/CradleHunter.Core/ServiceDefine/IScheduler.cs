@@ -7,6 +7,7 @@ namespace CradleHunter.Core
     public interface IScheduler
     {
         void Fail();
+
         void Fail(StatusResult status);
     }
 }
